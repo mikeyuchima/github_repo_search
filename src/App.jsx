@@ -67,12 +67,15 @@ class App extends Component {
           latest_tag: repo.tag_name,
           html: query.html_url
         };
-        this.setState({ query: [...this.state.query, repoData] });
+        this.setState({ query: [repoData] });
       });
   };
 
   add_fave = repo => {
     this.setState({ favourites: [...this.state.favourites, repo] });
+    var array = [...this.state.query];
+    array.splice(repo.index, 1);
+    this.setState({ query: array });
   };
 
   render() {
