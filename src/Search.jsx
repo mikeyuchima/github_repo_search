@@ -1,10 +1,24 @@
 import React, { Component } from "react";
 
-const Search = props => (
-  <section>
-    <span>{props.name}</span>
-    <span>{props.language}</span>
-  </section>
-);
+class Search extends Component {
+  handleAdd = evt => {
+    evt.preventDefault();
+    this.props.add_fave(this.props);
+  };
+  render() {
+    return (
+      <section>
+        <span>{this.props.name}</span>
+        <span>{this.props.language}</span>
+        <span>{this.props.latest_tag}</span>
+        <span>
+          <button type="button" onClick={this.handleAdd}>
+            Add
+          </button>
+        </span>
+      </section>
+    );
+  }
+}
 
 export default Search;
