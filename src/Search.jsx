@@ -9,20 +9,24 @@ class Search extends Component {
       latest_tag: this.props.latest_tag,
       index: this.props.index
     };
-    this.props.add_fave(fave_data);
+    this.props.add_favourite(fave_data);
   };
   render() {
     return (
-      <section>
-        <span>{this.props.name}</span>
-        <span>{this.props.language}</span>
-        <span>{this.props.latest_tag}</span>
-        <span>
-          <button type="button" onClick={this.handleAdd}>
-            Add
-          </button>
-        </span>
-      </section>
+      <tbody>
+        <tr>
+          <td>
+            <a href={this.props.html}>{this.props.name}</a>
+          </td>
+          <td>{this.props.language}</td>
+          <td>{this.props.latest_tag}</td>
+          <td>
+            <button type="button" onClick={this.handleAdd}>
+              Add
+            </button>
+          </td>
+        </tr>
+      </tbody>
     );
   }
 }
