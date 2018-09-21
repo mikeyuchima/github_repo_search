@@ -11,7 +11,8 @@ class App extends Component {
 
     this.state = {
       search: "",
-      favourites: ""
+      favourites: [],
+      query: []
     };
   }
 
@@ -23,7 +24,7 @@ class App extends Component {
   handleSubmit = evt => {
     evt.preventDefault();
     const url = API + this.state.search;
-    const rows = ["id", "full_name", "language"];
+    const rows = ["full_name", "html_url", "language"];
     fetch(url, {
       headers: {
         Authorization: `token ${TOKEN}`
@@ -32,9 +33,49 @@ class App extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        const query = JSON.stringify(data.items, rows);
-        this.setState({ query });
+        let query = JSON.stringify(data.items, rows);
+        query = JSON.parse(query);
+        this.loopQuery(query);
       });
+  };
+
+  loopQuery = query => {
+    for (let index = 0; index < 10; index++) {
+      const element = query[index];
+      this.getTagName(element);
+    }
+  };
+
+  getTagName = query => {
+    const url = `https://api.github.com/repos/${
+      query.full_name
+    }/releases/latest`;
+    const rows = ["tag_name"];
+    fetch(url, {
+      headers: {
+        Authorization: `token ${TOKEN}`
+      },
+      credentials: "same-origin"
+    })
+      .then(response => response.json())
+      .then(data => {
+        let repo = JSON.stringify(data, rows);
+        repo = JSON.parse(repo);
+        let repoData = {
+          name: query.full_name,
+          language: query.language,
+          latest_tag: repo.tag_name,
+          html: query.html_url
+        };
+        this.setState({ query: [repoData] });
+      });
+  };
+
+  add_fave = repo => {
+    this.setState({ favourites: [...this.state.favourites, repo] });
+    var array = [...this.state.query];
+    array.splice(repo.index, 1);
+    this.setState({ query: array });
   };
 
   render() {
@@ -47,14 +88,13 @@ class App extends Component {
           <label>
             <input
               type="text"
-              name="search"
               placeholder="Search"
               onChange={this.handleChange}
             />
           </label>
           <input type="submit" value="Search" />
         </form>
-        <SearchList searchData={this.state.query} />
+        <SearchList searchData={this.state.query} add_fave={this.add_fave} />
       </div>
     );
   }

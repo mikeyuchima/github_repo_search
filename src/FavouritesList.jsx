@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Search from "./Search.jsx";
+import Search from "./Search";
 
 const SearchList = props => (
   <section>
@@ -8,7 +8,7 @@ const SearchList = props => (
         name={search.name}
         language={search.language}
         latest_tag={search.latest_tag}
-        add_fave={props.add_fave}
+        remove_fave={props.remove_fave}
         index={index}
       />
     ))}
