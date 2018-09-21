@@ -19,7 +19,6 @@ class App extends Component {
 
   handleChange = evt => {
     this.setState({ search: evt.target.value });
-    console.log(this.state.search);
   };
 
   handleSubmit = evt => {
@@ -41,9 +40,9 @@ class App extends Component {
       });
   };
 
-  loopQuery = query => {
+  loopQuery = data => {
     for (let index = 0; index < 10; index++) {
-      const element = query[index];
+      const element = data[index];
       this.getTagName(element);
     }
   };
@@ -69,7 +68,8 @@ class App extends Component {
           latest_tag: repo.tag_name,
           html: query.html_url
         };
-        this.setState({ query: [...this.state.query, repoData] });
+        if (!this.state.favourites.includes(repoData))
+          this.setState({ query: [...this.state.query, repoData] });
       });
   };
 
