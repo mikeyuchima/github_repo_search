@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import SearchList from "./SearchList.jsx";
+import FavouritesList from "./FavouritesList.jsx";
 
 const API = "https://api.github.com/search/repositories?q=";
 const TOKEN = "4a5203d182af7404ebc8f32944d8a588aabda641";
@@ -23,6 +24,7 @@ class App extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
+    this.setState({ query: [] });
     const url = API + this.state.search;
     const rows = ["full_name", "html_url", "language"];
     fetch(url, {
@@ -67,34 +69,53 @@ class App extends Component {
           latest_tag: repo.tag_name,
           html: query.html_url
         };
-        this.setState({ query: [repoData] });
+        this.setState({ query: [...this.state.query, repoData] });
       });
   };
 
-  add_fave = repo => {
+  add_favourite = repo => {
     this.setState({ favourites: [...this.state.favourites, repo] });
     var array = [...this.state.query];
     array.splice(repo.index, 1);
     this.setState({ query: array });
   };
 
+  remove_favourite = repo => {
+    var array = [...this.state.favourites];
+    array.splice(repo.index, 1);
+    this.setState({ favourites: array });
+  };
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">My GitHub Faves</h1>
+          <h1 className="App-title">My GitHub Favourites</h1>
         </header>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={this.handleChange}
+        <section className="Tables">
+          <section className="Search">
+            <form onSubmit={this.handleSubmit}>
+              <label>
+                <input
+                  className="search"
+                  type="text"
+                  placeholder="Search"
+                  onChange={this.handleChange}
+                />
+              </label>
+              <input className="submit" type="submit" value="Search" />
+            </form>
+            <SearchList
+              search_data={this.state.query}
+              add_favourite={this.add_favourite}
             />
-          </label>
-          <input type="submit" value="Search" />
-        </form>
-        <SearchList searchData={this.state.query} add_fave={this.add_fave} />
+          </section>
+          <FavouritesList
+            className="Favourite"
+            favourites_data={this.state.favourites}
+            remove_favourite={this.remove_favourite}
+          />
+        </section>
       </div>
     );
   }

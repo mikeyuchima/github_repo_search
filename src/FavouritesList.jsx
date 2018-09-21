@@ -1,18 +1,31 @@
 import React, { Component } from "react";
-import Search from "./Search";
+import Favourites from "./Favourites.jsx";
 
 const SearchList = props => (
-  <section>
-    {props.searchData.map((search, index) => (
-      <Search
+  <table>
+    <colgroup>
+      <col />
+      <col />
+      <col />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Language</th>
+        <th>Latest Tag</th>
+      </tr>
+    </thead>
+    {props.favourites_data.map((search, index) => (
+      <Favourites
         name={search.name}
         language={search.language}
         latest_tag={search.latest_tag}
-        remove_fave={props.remove_fave}
+        html={search.html}
+        remove_favourite={props.remove_favourite}
         index={index}
       />
     ))}
-  </section>
+  </table>
 );
 
 export default SearchList;
