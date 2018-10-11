@@ -4,7 +4,7 @@ import SearchList from "./SearchList.jsx";
 import FavouritesList from "./FavouritesList.jsx";
 
 const API = "https://api.github.com/search/repositories?q=";
-const TOKEN = "4a5203d182af7404ebc8f32944d8a588aabda641";
+const TOKEN = //Your Token Here
 
 class App extends Component {
   constructor(props) {
